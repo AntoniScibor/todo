@@ -17,6 +17,7 @@ export default function TasksScreen(){
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const fetchTasks = async () => {
             try{
@@ -43,25 +44,41 @@ export default function TasksScreen(){
             </View>
         );
     }
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Tasks:</Text>
-
-            <FlatList
-                data={tasks}
-                keyExtractor={(item) => item.id.toString()} // każde id musi być stringiem
-                renderItem={({ item }) => (
-                <View style={styles.task}>
-                    <Text style={styles.title}>
-                    {item.title} {item.completed ? "✅" : "❌"}
-                    </Text>
-                    <Text style={styles.description}>{item.description}</Text>
-                </View>
-                )}
-            />
-         </View>
-    );
+    if (tasks.length === 0) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.header}>No tasks available.</Text>
+                <Link href="/AddTask" asChild>
+                   <Button title="Dodaj nowe zadanie" />
+                </Link>
+            </View>
+        );
+    }
+    else{
+        return (
+            <View style={styles.container}>
+                <Text style={styles.header}>Tasks:</Text>
+                <Link href="/AddTask" asChild>
+                    <Button title="Add new task" />
+                </Link>
+                <FlatList
+                    data={tasks}
+                    keyExtractor={(item) => item.id.toString()} // każde id musi być stringiem
+                    renderItem={({ item }) => (
+                    <View style={styles.task}>
+                        <Text style={styles.title}>
+                        {item.title} {item.completed ? "✅" : "❌"}
+                        </Text>
+                        <Text style={styles.description}>{item.description}</Text>
+                        <Link href={`/${item.id}`} asChild>
+                            <Button title="Edit"/>
+                        </Link>
+                    </View>
+                    )}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
