@@ -1,9 +1,8 @@
 import { View, Text, FlatList, ScrollView, StyleSheet, Button, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
+import { API_URL } from "./constants";
 
-
-const API_URL = "http://192.168.0.16:8000/tasks/";
 
 interface Task {
   id: number;
